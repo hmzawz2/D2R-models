@@ -1,0 +1,41 @@
+#### general settings
+name: ediffsr-test
+model: denoising
+distortion: sr
+gpu_ids: [2]
+
+sde:
+  max_sigma: 50
+  T: 100
+  schedule: cosine # linear, cosine
+  eps: 0.005
+
+degradation: # for some synthetic dataset that only have GTs
+  # for denoising
+  sigma: 25
+  noise_type: G # Gaussian noise: G
+
+  # for super-resolution
+  scale: 10
+
+#### path
+path:
+  pretrain_model_G: pretrained/SBEM.pth
+
+#### datasets
+datasets:
+  test1:
+    name: lateral_EPFL
+    mode: LQ
+    # dataroot_GT: /home/chenbh/data/EPFL/split/HR_Val
+    dataroot_LQ: /home/chenbohao/cbh_3p2/data/EPFL/EDiff_full_split/LQ/batch_0
+
+
+#### network structures
+network_G:
+  which_model_G: ConditionalNAFNet
+  setting:
+    width: 64
+    enc_blk_nums: [14, 1, 1, 1]
+    middle_blk_num: 1
+    dec_blk_nums: [1, 1, 1, 1]
